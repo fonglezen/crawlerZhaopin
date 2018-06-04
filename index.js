@@ -27,20 +27,27 @@ function handleHtml(html) {
     const list = wrap.find('.newlist');
 
     list.each(function(i, elem) {
-        let position = {
-            name: $(this).find('.zwmc').find('a').text(),
-            company: $(this).find('.gsmc').find('a').text(),
-            salary: $(this).find('.zwyx').text(),
-            area: $(this).find('.gzdd').text()
-        };
+        if(i != 0){
+            let position = {
+                name: $(this).find('.zwmc').find('a').text(),
+                company: $(this).find('.gsmc').find('a').text(),
+                salary: $(this).find('.zwyx').text(),
+                area: $(this).find('.gzdd').text()
+            };
+    
+            positionData.push(position);
+        }
 
-        positionData.push(position);
+        
+        
     });    
 
 }
 
 function saveToCsv (){
-    let cvsdata = [];
+    let cvsdata = [
+        ['职位名称','公司名称','月薪','地区']
+    ];
     positionData.map((item) => {
         cvsdata.push([
             item.name,
@@ -126,9 +133,9 @@ function getDataLoop() {
 
         var promises = [];
 
-        while (end > start) {
-            promises.push(getData(end));
-            end -= 1;
+        while (start < end) {
+            start += 1;
+            promises.push(getData(start));
         }
 
         Promise.all(promises).then(values => {
